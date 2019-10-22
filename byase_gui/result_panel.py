@@ -84,19 +84,18 @@ def _get_detail_result(df_gene_level: pd.DataFrame, df_isoform_level: pd.DataFra
     diff_section_start = _find_diff_section_start(df_gene_level)
     cols = ['Number', 'ID', 'Name', 'SNPs']
     d = ['Gene', row['Gene ID'], row['Gene Name'], row['SNPs']]
-    for col in df_gene_level.columns[diff_section_start:]:
-        cols.append(col)
-        d.append(row[col])
-    df = pd.DataFrame({col: [d[i]] for i, col in enumerate(cols)})[cols]
+    for i in range(diff_section_start, len(df_gene_level.columns)):
+        cols.append(df_gene_level.columns[i])
+        d.append(row[i])
+    df = pd.DataFrame([d], columns=cols)
 
     # Merge isoform-level results.
     diff_section_start = _find_diff_section_start(df_isoform_level)
     d = df_isoform_level[df_isoform_level['Task ID'] == task_id]
-    d = d.loc[:, ['Isoform Number', 'Isoform ID', 'Isoform Name', 'SNP Count'] +
-                 [d.columns[i] for i in range(diff_section_start, df_isoform_level.shape[1])]]
-    rename_dict = {x: y for x, y in zip(d.columns, df.columns)}
-    d = d.rename(columns=rename_dict)
-    df = pd.concat([df, d], ignore_index=True)
+    col_idx = [list(d.columns).index(col) for col in ['Isoform Number', 'Isoform ID', 'Isoform Name', 'SNP Count']]
+    col_idx += list(range(diff_section_start, df_isoform_level.shape[1]))
+    d = d.iloc[:, col_idx]
+    df = pd.DataFrame([df.iloc[0, :].tolist()] + [d.iloc[i, :].tolist() for i in range(d.shape[0])], columns=df.columns)
     df.index = ['g'] + ['i{}'.format(i) for i in range(df.shape[0] - 1)]
     return df
 

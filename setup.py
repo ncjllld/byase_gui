@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="byase-gui",
-    version="1.0.3",
+    version="1.0.4",
     author="Lili Dong",
     author_email="ncjllld@hit.edu.cn",
     description="A GUI tool for BYASE software.",
