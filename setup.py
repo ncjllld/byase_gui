@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="byase-gui",
-    version="1.0.4",
+    version="1.0.5",
     author="Lili Dong",
     author_email="ncjllld@hit.edu.cn",
     description="A GUI tool for BYASE software.",
@@ -14,11 +14,6 @@ setuptools.setup(
     url="https://github.com/ncjllld/byase_gui",
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=[
-        'byase',
-        'psutil',
-        'wxPython'
-    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
